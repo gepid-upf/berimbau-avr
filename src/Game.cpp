@@ -127,7 +127,7 @@ void Game::play_beat(char *fname)
 
 bool Game::repeat_beat(char *fname)
 {
-    uint32_t timems, start;
+    uint32_t timems, lastData, lastPlay;
     uint8_t data, played;
     SD::open_play(fname);
 
@@ -135,31 +135,38 @@ bool Game::repeat_beat(char *fname)
     do {
         played = update();
     } while(played > 3);
-    start = Millis::get();
-    
+    lastPlay = Millis::get();
+    lastData = timems;
+
     if(played != data){
         SD::close_play();
         return false;
     }
-
+    
     while(SD::read_beat(&timems, &data)){
+        uint32_t now;
         do {
             played = update();
-            if(Millis::get() - start > timems + MAX_DELAY_BEAT){
+            now = Millis::get();
+            if(now - lastPlay > timems - lastData + MAX_DELAY_BEAT){
                 SD::close_play();
                 return false;
             }
         } while(played > 3);
+
+        if(now - lastPlay + MAX_DELAY_BEAT < timems - lastData){
+            SD::close_play();
+            return false;
+        }
         
         if(played != data){
             SD::close_play();
             return false;
         }
 
-        if(Millis::get() - start + MAX_DELAY_BEAT < timems){
-            SD::close_play();
-            return false;
-        }
+        lastPlay = now;
+        lastData = timems;
+    
     } 
 
     return true;
