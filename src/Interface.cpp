@@ -101,8 +101,7 @@ bool Interface::update()
         }
         if(down.get_state() == Button::State::PRESSED){
             if(name_index != 19 && char_sel != 0x40){
-                name_buffer[name_index] = char_sel;
-                name_index++;
+                name_buffer[name_index++] = char_sel;
                 char_sel = 0x40;
             } 
             lcd_gotoxy(name_index, 1);
@@ -111,7 +110,7 @@ bool Interface::update()
         }
         if(select.get_state() == Button::State::PRESSED){
             if(char_sel != 0x40){
-                name_index++;
+                name_buffer[name_index++] = char_sel;
                 name_buffer[name_index] = 0;
                 show_recording();
                 return true;
