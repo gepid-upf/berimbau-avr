@@ -25,7 +25,7 @@
  * More debouncing means slower pressings.
  * Less debouncing can include clicks that are actually noise.
  */
-#define DEBOUNCE_TIME_MILLISECONDS 25
+#define DEBOUNCE_TIME_MILLISECONDS 100
 
 /**
  * Button class
