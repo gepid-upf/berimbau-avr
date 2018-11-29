@@ -37,8 +37,6 @@ bool PCM::status_d = false;
 uint16_t PCM::index_d = 0;
 uint16_t PCM::size_d = 0;
 
-#include <serial.h>
-
 // Sample timer
 ISR(TIMER1_COMPA_vect)
 {

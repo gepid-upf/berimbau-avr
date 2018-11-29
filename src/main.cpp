@@ -28,7 +28,7 @@
 
 int main()
 {   
-    _delay_ms(500); // Voltage stabilization
+    _delay_ms(250); // Voltage stabilization
     uart_init(); // Only for debug
     Interface::init();
     Game::init(pgm_get_far_address(caxixi_data), caxixi_length,

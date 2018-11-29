@@ -47,12 +47,14 @@ public:
     static void stop_record();
     static void play_beat(char *fname);
     static bool repeat_beat(char *fname);
+    static uint8_t get_in_time();
 
 private:
     static Button caxixi;
     static Button moeda;
     static Button presa;
     static Button solta;
+    static uint8_t in_time;
 
     static const uint32_t MAX_DELAY_BEAT = 250;
 };

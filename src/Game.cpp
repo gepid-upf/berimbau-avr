@@ -26,6 +26,8 @@ Button Game::moeda(&DDRF, &PORTF, &PINF, PINF1);
 Button Game::presa(&DDRF, &PORTF, &PINF, PINF2);
 Button Game::solta(&DDRF, &PORTF, &PINF, PINF3);
 
+uint8_t Game::in_time = 0;
+
 void Game::init(uint32_t p_caxixi, uint16_t caxixi_s, uint32_t p_moeda,
                 uint16_t moeda_s, uint32_t p_presa, uint16_t presa_s,
                 uint32_t p_solta, uint16_t solta_s)
@@ -129,6 +131,8 @@ void Game::play_beat(char *fname)
 bool Game::repeat_beat(char *fname)
 {
     uint32_t timems, lastData, lastPlay;
+    uint32_t deltatotal = 0;
+    uint16_t beattotal = 0;
     uint8_t data, played;
     SD::open_play(fname);
 
@@ -147,9 +151,9 @@ bool Game::repeat_beat(char *fname)
     while(SD::read_beat(&timems, &data)){
         uint32_t now;
         do {
-            played = update();
-            now = Millis::get();
-            if(now - lastPlay > timems - lastData + MAX_DELAY_BEAT){
+            played = update(); // Read pressed
+            now = Millis::get(); // Time now
+            if(now - lastPlay > timems - lastData + MAX_DELAY_BEAT){ // DELTA > deltaRead
                 SD::close_play();
                 return false;
             }
@@ -165,10 +169,20 @@ bool Game::repeat_beat(char *fname)
             return false;
         }
 
+        deltatotal += abs((int32_t)now - (int32_t)lastPlay - ((int32_t)timems - (int32_t)lastData));
+        beattotal++;
+
         lastPlay = now;
         lastData = timems;
     
-    } 
+    }
+
+    in_time = deltatotal * -100.0/(beattotal*MAX_DELAY_BEAT) + 100;
 
     return true;
+}
+
+uint8_t Game::get_in_time()
+{
+    return in_time;
 }

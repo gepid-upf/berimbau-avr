@@ -43,7 +43,7 @@ void Interface::init()
 {
     lcd_init(LCD_DISP_ON_BLINK);
     lcd_home();
-    lcd_puts("Inicializando...");
+    //lcd_puts("Inicializando...");
 }
 
 void Interface::show_main()
@@ -71,8 +71,10 @@ bool Interface::update()
         if(select.get_state() == Button::State::PRESSED){
             if(!line)
                 name_input();
-            else
+            else {
                 challenge();
+                return false;
+            }
         }
         if(up.get_state() == Button::State::PRESSED){
             if(line) line--;
@@ -206,10 +208,10 @@ bool Interface::update()
                 lcd_puts("Voce venceu!");
                 char buffer[16];
                 lcd_gotoxy(0, 1);
-                sprintf(buffer, "Tentativas: %u", fails);
+                sprintf(buffer, "Tentativas: %u", ++fails);
                 lcd_puts(buffer);
                 lcd_gotoxy(0, 2);
-                sprintf(buffer, "Falhas: %u", fails);
+                sprintf(buffer, "Acerto: %u%%", Game::get_in_time());
                 lcd_puts(buffer);
                 lcd_gotoxy(0, 3);
                 lcd_puts("  CONTINUAR      X  ");
@@ -336,18 +338,17 @@ bool Interface::try_play()
     lcd_puts("Repita o ritmo");
     lcd_gotoxy(0, 1);
     char buffer[16];
-    sprintf(buffer, "Tentativas: %u", tries);
+    sprintf(buffer, "Tentativas: %u", fails);
     lcd_puts(buffer);
     while(!Game::repeat_beat(name_buffer))
     {
-        fails++;
         lcd_clrscr();
         lcd_puts("Ritmo incorreto");
         lcd_gotoxy(0,1);
         lcd_puts("Tentar novamente?");
         char buffer[16];
         lcd_gotoxy(0, 2);
-        sprintf(buffer, "Tentativas: %u", fails);
+        sprintf(buffer, "Tentativas: %u", ++fails);
         lcd_puts(buffer);
         lcd_gotoxy(0, 3);
         lcd_puts("            X    O  ");
