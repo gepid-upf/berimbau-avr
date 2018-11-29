@@ -14,7 +14,7 @@
  */
 
 #include <Interface.h>
-#include <lcdpcf8574.h>
+#include <lcd.h>
 #include <SD.h>
 #include <Game.h>
 
@@ -43,7 +43,6 @@ void Interface::init()
 {
     lcd_init(LCD_DISP_ON_BLINK);
     lcd_home();
-    lcd_led(0); //set led
     lcd_puts("Inicializando...");
 }
 

@@ -18,6 +18,7 @@
 #include <Interface.h>
 #include <Game.h>
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
 // Include here to ensure the order in memory to allow overflow
 #include <samples/caxixi.h>
@@ -27,6 +28,7 @@
 
 int main()
 {   
+    _delay_ms(500); // Voltage stabilization
     uart_init(); // Only for debug
     Interface::init();
     Game::init(pgm_get_far_address(caxixi_data), caxixi_length,
