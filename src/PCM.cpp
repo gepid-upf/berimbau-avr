@@ -136,12 +136,14 @@ void PCM::set_active(Voice voice, bool active)
         ATOMIC_BLOCK(ATOMIC_FORCEON){
             status_b = active;
             index_b = 0;
+            status_d = false; // Solta desativa quando a moeda é pressionada
         }
         break;
     case Voice::C:
         ATOMIC_BLOCK(ATOMIC_FORCEON){
             status_c = active;
             index_c = 0;
+            status_d = false; // Solta desativa quando a presa é pressionada
         }
         break;
     case Voice::D:
