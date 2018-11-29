@@ -21,74 +21,75 @@
 
 #define DEBUG 1
 
-Button Game::kick(&DDRF, &PORTF, &PINF, PINF0);
-Button Game::crash(&DDRF, &PORTF, &PINF, PINF1);
-Button Game::snare(&DDRF, &PORTF, &PINF, PINF2);
-Button Game::hihat(&DDRF, &PORTF, &PINF, PINF3);
+Button Game::caxixi(&DDRF, &PORTF, &PINF, PINF0);
+Button Game::moeda(&DDRF, &PORTF, &PINF, PINF1);
+Button Game::presa(&DDRF, &PORTF, &PINF, PINF2);
+Button Game::solta(&DDRF, &PORTF, &PINF, PINF3);
 
-void Game::init(uint32_t p_kick, uint16_t kick_s, uint32_t p_crash, uint16_t crash_s,
-                uint32_t p_snare, uint16_t snare_s, uint32_t p_hihat, uint16_t hihat_s)
+void Game::init(uint32_t p_caxixi, uint16_t caxixi_s, uint32_t p_moeda,
+                uint16_t moeda_s, uint32_t p_presa, uint16_t presa_s,
+                uint32_t p_solta, uint16_t solta_s)
 {
     SD::init();
 
     PCM::init(44100);
-    PCM::set_voice(PCM::Voice::A, p_kick, kick_s);
-    PCM::set_voice(PCM::Voice::B, p_crash, crash_s);
-    PCM::set_voice(PCM::Voice::C, p_snare, snare_s);
-    PCM::set_voice(PCM::Voice::D, p_hihat, hihat_s);
+    PCM::set_voice(PCM::Voice::A, p_caxixi, caxixi_s);
+    PCM::set_voice(PCM::Voice::B, p_moeda, moeda_s);
+    PCM::set_voice(PCM::Voice::C, p_presa, presa_s);
+    PCM::set_voice(PCM::Voice::D, p_solta, solta_s);
 }
 
 uint8_t Game::update()
 {
-    kick.update();
-    crash.update();
-    snare.update();
-    hihat.update();
+    caxixi.update();
+    moeda.update();
+    presa.update();
+    solta.update();
 
-    if(kick.get_state() == Button::State::PRESSED){
+    if(caxixi.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::A);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
-            SD::record(Millis::get(), (uint8_t)Instrument::KICK);
+            SD::record(Millis::get(), (uint8_t)Instrument::CAXIXI);
             break;
         case Interface::State::PLAYING:
-            return (uint8_t)Instrument::KICK;
+            return (uint8_t)Instrument::CAXIXI;
         default:
             break;
         }
     }
-    if(crash.get_state() == Button::State::PRESSED){
+    if(moeda.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::B);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
-            SD::record(Millis::get(), (uint8_t)Instrument::CRASH);
+            SD::record(Millis::get(), (uint8_t)Instrument::MOEDA);
             break;
         case Interface::State::PLAYING:
-            return (uint8_t)Instrument::CRASH;
+            return (uint8_t)Instrument::MOEDA;
         default:
             break;
         }
     }
-    if(snare.get_state() == Button::State::PRESSED){
+    if(presa.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::C);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
-            SD::record(Millis::get(), (uint8_t)Instrument::SNARE);
+            SD::record(Millis::get(), (uint8_t)Instrument::PRESA);
             break;
         case Interface::State::PLAYING:
-            return (uint8_t)Instrument::SNARE;
+            return (uint8_t)Instrument::PRESA;
         default:
             break;
         }
     }
-    if(hihat.get_state() == Button::State::PRESSED){
+    if(solta.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::D);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
-            SD::record(Millis::get(), (uint8_t)Instrument::HIHAT);
+            SD::record(Millis::get(), (uint8_t)Instrument::SOLTA);
             break;
         case Interface::State::PLAYING:
-            return (uint8_t)Instrument::HIHAT;
+            return (uint8_t)Instrument::SOLTA;
         default:
             break;
         }
@@ -107,16 +108,16 @@ void Game::play_beat(char *fname)
     while(SD::read_beat(&timems, &data)){
         while(Millis::get() - start < timems);
         switch((Game::Instrument)data){
-        case Instrument::KICK:
+        case Instrument::CAXIXI:
             PCM::set_active(PCM::Voice::A);
             break;
-        case Instrument::CRASH:
+        case Instrument::MOEDA:
             PCM::set_active(PCM::Voice::B);
             break;
-        case Instrument::SNARE:
+        case Instrument::PRESA:
             PCM::set_active(PCM::Voice::C);
             break;
-        case Instrument::HIHAT:
+        case Instrument::SOLTA:
             PCM::set_active(PCM::Voice::D);
             break;
         }

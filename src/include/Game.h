@@ -29,15 +29,15 @@ public:
         PLAY
     };
     enum class Instrument {
-        KICK,
-        CRASH,
-        SNARE,
-        HIHAT
+        CAXIXI,
+        MOEDA,
+        PRESA,
+        SOLTA
     };
 
-    static void init(uint32_t p_kick, uint16_t kick_s, uint32_t p_crash,
-                        uint16_t crash_s, uint32_t p_snare, uint16_t snare_s,
-                        uint32_t p_hihat, uint16_t hihat_s);
+    static void init(uint32_t p_caxixi, uint16_t caxixi_s, uint32_t p_moeda,
+                        uint16_t moeda_s, uint32_t p_presa, uint16_t presa_s,
+                        uint32_t p_solta, uint16_t solta_s);
     static uint8_t update();
 
     static void set_state(State state);
@@ -49,10 +49,10 @@ public:
     static bool repeat_beat(char *fname);
 
 private:
-    static Button kick;
-    static Button crash;
-    static Button snare;
-    static Button hihat;
+    static Button caxixi;
+    static Button moeda;
+    static Button presa;
+    static Button solta;
 
     static const uint32_t MAX_DELAY_BEAT = 250;
 };
