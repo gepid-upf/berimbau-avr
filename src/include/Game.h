@@ -18,6 +18,7 @@
 
 #include <PCM.h>
 #include <Button.h>
+#include <Led.h>
 #include <SD.h>
 #include <Interface.h>
 
@@ -49,11 +50,18 @@ public:
     static bool repeat_beat(char *fname);
     static uint8_t get_in_time();
 
+    static void update_leds();
+
 private:
     static Button caxixi;
     static Button moeda;
     static Button presa;
     static Button solta;
+    static Led l_caxixi;
+    static Led l_moeda;
+    static Led l_presa;
+    static Led l_solta;
+
     static uint8_t in_time;
 
     static const uint32_t MAX_DELAY_BEAT = 250;

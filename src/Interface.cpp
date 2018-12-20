@@ -65,6 +65,7 @@ bool Interface::update()
     down.update();
     select.update();
     back.update();
+    Game::update_leds();
 
     switch(state){
     case State::MAIN:

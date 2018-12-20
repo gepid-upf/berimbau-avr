@@ -21,10 +21,17 @@
 
 #define DEBUG 1
 
+#define DELAY_LED 500
+
 Button Game::caxixi(&DDRF, &PORTF, &PINF, PINF0);
 Button Game::moeda(&DDRF, &PORTF, &PINF, PINF1);
 Button Game::presa(&DDRF, &PORTF, &PINF, PINF2);
 Button Game::solta(&DDRF, &PORTF, &PINF, PINF3);
+
+Led Game::l_caxixi(&DDRD, &PORTD, PIND0);
+Led Game::l_solta(&DDRD, &PORTD, PIND1);
+Led Game::l_presa(&DDRD, &PORTD, PIND2);
+Led Game::l_moeda(&DDRD, &PORTD, PIND3);
 
 uint8_t Game::in_time = 0;
 
@@ -47,9 +54,14 @@ uint8_t Game::update()
     moeda.update();
     presa.update();
     solta.update();
+    l_caxixi.update();
+    l_moeda.update();
+    l_presa.update();
+    l_solta.update();
 
     if(caxixi.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::A);
+        l_caxixi.blink(DELAY_LED);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
             SD::record(Millis::get(), (uint8_t)Instrument::CAXIXI);
@@ -62,6 +74,7 @@ uint8_t Game::update()
     }
     if(moeda.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::B);
+        l_moeda.blink(DELAY_LED);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
             SD::record(Millis::get(), (uint8_t)Instrument::MOEDA);
@@ -74,6 +87,7 @@ uint8_t Game::update()
     }
     if(presa.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::C);
+        l_presa.blink(DELAY_LED);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
             SD::record(Millis::get(), (uint8_t)Instrument::PRESA);
@@ -86,6 +100,7 @@ uint8_t Game::update()
     }
     if(solta.get_state() == Button::State::PRESSED){
         PCM::set_active(PCM::Voice::D);
+        l_solta.blink(DELAY_LED);
         switch(Interface::get_state()){
         case Interface::State::RECORDING:
             SD::record(Millis::get(), (uint8_t)Instrument::SOLTA);
@@ -108,19 +123,28 @@ void Game::play_beat(char *fname)
 
     uint32_t start = Millis::get();
     while(SD::read_beat(&timems, &data)){
-        while(Millis::get() - start < timems);
+        while(Millis::get() - start < timems){
+            l_caxixi.update();
+            l_moeda.update();
+            l_presa.update();
+            l_solta.update();
+        };
         switch((Game::Instrument)data){
         case Instrument::CAXIXI:
             PCM::set_active(PCM::Voice::A);
+            l_caxixi.blink(DELAY_LED);
             break;
         case Instrument::MOEDA:
             PCM::set_active(PCM::Voice::B);
+            l_moeda.blink(DELAY_LED);
             break;
         case Instrument::PRESA:
             PCM::set_active(PCM::Voice::C);
+            l_presa.blink(DELAY_LED);
             break;
         case Instrument::SOLTA:
             PCM::set_active(PCM::Voice::D);
+            l_solta.blink(DELAY_LED);
             break;
         }
     }
@@ -185,4 +209,12 @@ bool Game::repeat_beat(char *fname)
 uint8_t Game::get_in_time()
 {
     return in_time;
+}
+
+void Game::update_leds()
+{
+    l_caxixi.update();
+    l_moeda.update();
+    l_presa.update();
+    l_solta.update();
 }
