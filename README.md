@@ -1,9 +1,8 @@
 # air-drums
 
-AVR Air Drums using microcontroller audio and accelerometers.
+AVR Air Drums / Berimbau using microcontroller audio.
 
-This project is a drumkit sampler with audio output provided by the AVR microcontroller.
-Initially the inputs are handled by buttons, but in the future it will be done with accelerometers.
+This project is a drumkit/berimbau sampler with audio output provided by the AVR microcontroller.
 
 ## Compiling
 
