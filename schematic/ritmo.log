@@ -1,0 +1,14 @@
+# Writing all output to: Z:\home\rattlehead\Drive\Projetos\Current\ritmo\air-drums_old\proteus\ritmo.log
+set pad_wire_necking on
+bus diagonal
+fanout 10
+route 100
+clean 4
+route 100 16
+clean 4
+route 100 16
+clean 4
+filter 10
+recorner diagonal
+status_file
+
