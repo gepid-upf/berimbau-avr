@@ -1,4 +1,4 @@
-# air-drums
+# berimbau-avr
 
 AVR Berimbau sampler and mini game.
 
