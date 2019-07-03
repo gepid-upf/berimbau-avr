@@ -16,7 +16,7 @@ There is no need for additional configuration.
 
 ## Authors
 
-* **Angelo Elias Dalzotto** - *The project and the [AVR FAT C++ library](https://github.com/aedalzotto/avr-fat-cpp)* - [aedalzotto](https://github.com/aedalzotto)
+* **Angelo Elias Dalzotto** - *The project and the [AVR FAT C++ library](https://github.com/gepid-upf/avr-fat-cpp)* - [aedalzotto](https://github.com/aedalzotto)
 
 ## License
 
